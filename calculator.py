@@ -33,17 +33,17 @@ def lexem_extractor_from_expression(express):
     beginIndexLem=0
     endIndexLem=0
     counter=0
-    lexemSaver=False
+    lexemFieldFlag=False
     for i in express:
         counter +=1  
         if (i=="("):
-            lexemSaver=True
+            lexemFieldFlag=True
             beginIndexLem=counter
             countOpeningBrackets += 1
-        if  (lexemSaver==False) and ( i==")"):
+        if  (lexemFieldFlag==False) and ( i==")"):
             countClosingBrackets += 1
-        if  lexemSaver and ( i==")"):
-            lexemSaver=False
+        if  lexemFieldFlag and ( i==")"):
+            lexemFieldFlag=False
             endIndexLem=counter-1
             countClosingBrackets += 1
             lexem=express[beginIndexLem:endIndexLem]
