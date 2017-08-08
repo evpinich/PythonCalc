@@ -22,10 +22,10 @@ def parser_lexem_and_calc(lex):
             list_element[i+1]=str(float(list_element[i-1])/float(list_element[i+1]))
             list_element[i-1]="0"
             list_element[i]="0"    
-    otvet=0;
+    ansver=0;
     for i in range(len(list_element)):
-       otvet=otvet+float( list_element[i])
-    return otvet
+       ansver=ansver+float( list_element[i])
+    return ansver
 """"Funcrion lexem extractor from expression"""
 def lexem_extractor_from_expression(express):
     countOpeningBrackets=0
@@ -33,17 +33,17 @@ def lexem_extractor_from_expression(express):
     beginIndexLem=0
     endIndexLem=0
     counter=0
-    lemsSaver=False
+    lexemSaver=False
     for i in express:
         counter +=1  
         if (i=="("):
-            lemsSaver=True
+            lexemSaver=True
             beginIndexLem=counter
             countOpeningBrackets += 1
-        if  (lemsSaver==False) and ( i==")"):
+        if  (lexemSaver==False) and ( i==")"):
             countClosingBrackets += 1
-        if  lemsSaver and ( i==")"):
-            lemsSaver=False
+        if  lexemSaver and ( i==")"):
+            lexemSaver=False
             endIndexLem=counter-1
             countClosingBrackets += 1
             lexem=express[beginIndexLem:endIndexLem]
