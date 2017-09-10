@@ -62,8 +62,8 @@ class Calculator(object):
                 list_element[i] = "0"
         ansver = 0
 
-        for i in range(len(list_element)):
-            ansver = ansver + float(list_element[i])
+        for i in list_element:
+            ansver += float(i)
         return ansver
 
     def _find_lexem_lnside_expression(self, expression):
