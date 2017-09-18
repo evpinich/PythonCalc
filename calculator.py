@@ -1,4 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 class Calculator(object):
     """"Class of calculating text expression  """
     _error_state = False
