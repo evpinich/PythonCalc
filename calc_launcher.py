@@ -3,19 +3,21 @@
 
 
 import calculator
+HYSTORY_NAME_FILE_DIRECTION = "hystory.txt"
 
 
 def _save_history(stack_for_saving):
-    file = open("hystory.txt", "w+", encoding='utf-8')
-    for i in stack_for_saving:
-        file.writelines(i + "\n")
-    file.close
+    file = open(HYSTORY_NAME_FILE_DIRECTION, "w+", encoding='utf-8')
+    if file:
+        for i in stack_for_saving:
+            file.writelines(i + "\n")
+        file.close
     return ""
 
 
 def _load_history():
     hystory_from_file = []
-    file = open("hystory.txt", "r", encoding='utf-8')
+    file = open(HYSTORY_NAME_FILE_DIRECTION, "r", encoding='utf-8')
     if file:
         for line in file:
             line = line.rstrip('\n')
@@ -35,7 +37,7 @@ while True:
     if user_expression == "exit":
         _save_history(stack)
         break
-    if user_expression == "history":
+    if user_expression == "hystory":
         for i in stack:
             print(i)
         print("------------------------------------------------------------")
