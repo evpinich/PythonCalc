@@ -1,11 +1,71 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
 class Calculator(object):
     """"Class of calculating text expression  """
+    HISTORY_NAME_FILE_DIRECTION = 'history.txt'
+    _history_stack = []
+    _file_history_was_loaded = False
+    _launcher_done_calculations = False
     _error_state = False
     _error_masage = set()
+
+    def _start(self):
+        if not self._file_history_was_loaded:
+            if self._load_history():
+                self._file_history_was_loaded = True
+                print("history_file_was_loaded_successful")
+        while not self._launcher_done_calculations:
+            self._calc_bash(input(">"))
+        self._launcher_done_calculations = False
+        return
+
+    def _save_history(self):
+        file = open(self.HISTORY_NAME_FILE_DIRECTION, "w+")
+        if file:
+            for i in self._history_stack:
+                file.writelines(i + "\n")
+        file.close
+        return True
+
+    def _load_history(self):
+        history_from_file = []
+        try:
+            file = open(self.HISTORY_NAME_FILE_DIRECTION, "r")
+            for line in file:
+                line = line.rstrip('\n')
+                history_from_file.append(line)
+            file.close
+        except FileNotFoundError:
+            file.close
+            return False
+        self._history_stack = history_from_file
+        return True
+
+    def _calc_bash(self, comand_line):
+        counter = len(self._history_stack) + 1
+
+        if comand_line == "exit":
+            self._save_history()
+            self._launcher_done_calculations = True
+            return
+
+        if comand_line == "history":
+            for i in self._history_stack:
+                print(i)
+            return
+
+        result = self._calc_expression(comand_line)
+        print("RESULT =", result)
+
+        if counter > 10:
+            self._history_stack.append(str(result))
+            self._history_stack.pop(0)
+        else:
+            self._history_stack.append(str(result))
+        print("------------------------------------------------------------")
+        return float(result)
 
     def _calc_expression(self, expression):
         """"Method for calculating expression  """
