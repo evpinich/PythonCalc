@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import csv
+
 
 class Calculator(object):
     """"Class of calculating text expression  """
-    HISTORY_NAME_FILE_DIRECTION = 'history.txt'
+    HISTORY_NAME_FILE_DIRECTION = 'history.csv'
     _history_stack = []
     _file_history_was_loaded = False
     _launcher_done_calculations = False
@@ -22,24 +24,21 @@ class Calculator(object):
         return
 
     def _save_history(self):
-        file = open(self.HISTORY_NAME_FILE_DIRECTION, "w+")
-        if file:
-            for i in self._history_stack:
-                file.writelines(i + "\n")
-        file.close
+        with open(self.HISTORY_NAME_FILE_DIRECTION, 'w') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(self._history_stack)
         return True
 
     def _load_history(self):
         history_from_file = []
         try:
-            file = open(self.HISTORY_NAME_FILE_DIRECTION, "r")
-            for line in file:
-                line = line.rstrip('\n')
-                history_from_file.append(line)
-            file.close
+            my_file = open(self.HISTORY_NAME_FILE_DIRECTION, 'r')
+            reader = csv.reader(my_file)
+            for row in reader:
+                for index in row:
+                    history_from_file.append(index)
         except FileNotFoundError:
-            file.close
-            return False
+            history_from_file = []
         self._history_stack = history_from_file
         return True
 
@@ -65,7 +64,7 @@ class Calculator(object):
         else:
             self._history_stack.append(str(result))
         print("------------------------------------------------------------")
-        return float(result)
+        return result
 
     def _calc_expression(self, expression):
         """"Method for calculating expression  """
