@@ -26,7 +26,8 @@ class Calculator(object):
     def _save_history(self):
         with open(self.HISTORY_NAME_FILE_DIRECTION, 'w') as csv_file:
             writer = csv.writer(csv_file)
-            writer.writerow(self._history_stack)
+            for item in self._history_stack:
+                writer.writerow([item])
         return True
 
     def _load_history(self):
@@ -46,9 +47,8 @@ class Calculator(object):
         counter = len(self._history_stack) + 1
 
         if comand_line == "exit":
-            self._save_history()
             self._launcher_done_calculations = True
-            return
+            return self._save_history()
 
         if comand_line == "history":
             for i in self._history_stack:

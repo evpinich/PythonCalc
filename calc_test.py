@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import calculator
 import unittest
+from mock import Mock
 
 
 class MyCalcTest(unittest.TestCase):
@@ -47,15 +47,20 @@ class MyCalcTest(unittest.TestCase):
 
     def test_method_of_calc_bash(self):
         result = self.calc._calc_bash("(23-20)/(-3)+23-((16*4)*(120/12))/2-2")
-        self.assertEqual(result, -300)
+        self.assertEqual(result, -300.0)
 
     def test_method_of_save_history(self):
         result = self.calc._save_history()
-        self.assertEqual(result, True)
+        self.assertEqual(result, "file history saved successfully")
 
     def test_method_of_load_history(self):
         result = self.calc._load_history()
         self.assertEqual(result, True)
+
+    def test_exit(self):
+        self.calc._save_history = Mock(return_value="file history saved successfully")
+        result = self.calc._calc_bash("exit")
+        self.assertEqual(result, "file history saved successfully")
 
 
 if __name__ == '__main__':
