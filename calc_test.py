@@ -2,24 +2,31 @@
 # -*- coding: utf-8 -*-
 import calculator
 import unittest
-from mock import Mock
+from unittest.mock import Mock
 
 
 class MyCalcTest(unittest.TestCase):
     """Test for Calculator class"""
     calc = calculator.Calculator()
+    mock_save_history = Mock(return_value="file history saved successfully")
+    mock_load_history = Mock(return_value="file history loaded successfully")
+    calc._save_history = mock_save_history
+    calc._load_history = mock_load_history
 
     def test_exeption_brackets_error_1(self):
         result = self.calc._calc_expression("(12-23))")
         self.assertEqual(result, {'ERROR: обнаружены непарные скопки внутри выражения'})
+        print("")
 
     def test_exeption_brackets_error_2(self):
         result = self.calc._calc_expression("((232-23)")
         self.assertEqual(result, {'ERROR: обнаружены непарные скопки внутри выражения'})
+        print("")
 
     def test_unknown_sintaxis_error(self):
         result = self.calc._calc_expression("(23-20)//(-3)+23-((16*4)*(120/12))/2-2")
         self.assertEqual(result, {'ERROR: обнаружена неизвесная синтаксическая ошибка'})
+        print("")
 
     def test_dev_by_zero_error(self):
         result = self.calc._calc_expression("(23-20)/(-3)+23-((16*4)*(120/(12-3*4)))/2-2")
@@ -55,12 +62,15 @@ class MyCalcTest(unittest.TestCase):
 
     def test_method_of_load_history(self):
         result = self.calc._load_history()
-        self.assertEqual(result, True)
+        self.assertEqual(result, "file history loaded successfully")
 
     def test_exit(self):
-        self.calc._save_history = Mock(return_value="file history saved successfully")
         result = self.calc._calc_bash("exit")
         self.assertEqual(result, "file history saved successfully")
+
+    def test_mock_call_counter(self):
+        self.assertEqual(self.calc._save_history.call_count, 2)
+        self.assertEqual(self.calc._load_history.call_count, 1)
 
 
 if __name__ == '__main__':

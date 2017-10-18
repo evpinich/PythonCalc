@@ -38,8 +38,10 @@ class Calculator(object):
             for row in reader:
                 for index in row:
                     history_from_file.append(index)
+            my_file.close()
         except FileNotFoundError:
             history_from_file = []
+            my_file.close()
         self._history_stack = history_from_file
         return True
 
